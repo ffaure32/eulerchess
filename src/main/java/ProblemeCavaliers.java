@@ -5,7 +5,11 @@ import java.util.stream.Collectors;
 
 public class ProblemeCavaliers {
 
-    public List<Case> prochainDeplacement(Echiquier etatEchiquierActuel) {
+    public List<Case> solutionProblemeEuler(Case caseDepart) {
+        return prochainDeplacement(new Echiquier(caseDepart));
+    }
+
+    private List<Case> prochainDeplacement(Echiquier etatEchiquierActuel) {
         List<Case> casesAccessibles = etatEchiquierActuel.casesAccessibles();
         List<Case> deplacementsAnterieurs = etatEchiquierActuel.getDeplacements();
 
@@ -14,21 +18,24 @@ public class ProblemeCavaliers {
         if(cheminCondamne(nouvellesPositionsPossibles)) {
             return Collections.EMPTY_LIST;
         }
-        Optional<Echiquier> solution = getSolution(nouvellesPositionsPossibles);
+        Optional<Echiquier> solution = solutionParmiNouvellesPositions(nouvellesPositionsPossibles);
         if(solution.isPresent()) {
             return solution.get().getDeplacements();
         }
 
-        for(Echiquier nouveauDeplacement : nouvellesPositionsPossibles) {
-            List<Case> solutions = prochainDeplacement(nouveauDeplacement);
-            if (!solutions.isEmpty()) {
-                return solutions;
-            }
-        }
-        return Collections.EMPTY_LIST;
+        Optional<List<Case>> solutionRemontee = testerProchainsDeplacements(nouvellesPositionsPossibles);
+        return solutionRemontee.orElse(Collections.EMPTY_LIST);
     }
 
-    private Optional<Echiquier> getSolution(List<Echiquier> nouvellesPositionsPossibles) {
+    private Optional<List<Case>> testerProchainsDeplacements(List<Echiquier> nouvellesPositionsPossibles) {
+        return nouvellesPositionsPossibles
+            .stream()
+            .map(this::prochainDeplacement)
+            .filter(cs -> !cs.isEmpty())
+            .findFirst();
+    }
+
+    private Optional<Echiquier> solutionParmiNouvellesPositions(List<Echiquier> nouvellesPositionsPossibles) {
         return nouvellesPositionsPossibles
             .stream()
             .filter(Echiquier::echiquierComplet)
@@ -46,7 +53,7 @@ public class ProblemeCavaliers {
     private boolean cheminCondamne(List<Echiquier> nouvellesPositionsPossibles) {
         return nouvellesPositionsPossibles
             .stream()
-            .anyMatch(nouveauDeplacement -> isCheminCondamne(nouveauDeplacement));
+            .anyMatch(this::isCheminCondamne);
     }
 
     private boolean isCheminCondamne(Echiquier nouveauDeplacement) {
