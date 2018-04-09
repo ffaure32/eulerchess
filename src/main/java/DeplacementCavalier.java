@@ -1,24 +1,23 @@
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum DeplacementCavalier {
-    NE(2, 1),
-    ENE(1, 2),
-    ESE(-1, 2),
-    SE(-2, 1),
-    SO(-2, -1),
-    OSO(-1, -2),
-    ONO(1, -2),
-    NO(2, -1);
+    NE(1, 2),
+    ENE(2, 1),
+    ESE(2, -1),
+    SE(1, -2),
+    SO(-1, -2),
+    OSO(-2, -1),
+    ONO(-2, 1),
+    NO(-1, 2);
 
-    private final int deplacementVertical;
-    private final int deplacementHorizontal;
+    private final int deplacementLignes;
+    private final int deplacementColonnes;
 
-    DeplacementCavalier(int deplacementHorizontal, int deplacementVertical) {
-        this.deplacementVertical = deplacementVertical;
-        this.deplacementHorizontal = deplacementHorizontal;
+    DeplacementCavalier(int deplacementColonnes, int deplacementLignes) {
+        this.deplacementLignes = deplacementLignes;
+        this.deplacementColonnes = deplacementColonnes;
     }
 
     public static List<Case> deplacementsPossibles(Case caseInitiale) {
@@ -29,6 +28,6 @@ public enum DeplacementCavalier {
     }
 
     private Case deplacement(Case caseIniale) {
-        return new Case(caseIniale.ligne+deplacementVertical, caseIniale.colonne+deplacementHorizontal);
+        return new Case(caseIniale.colonne+ deplacementColonnes, caseIniale.ligne+ deplacementLignes);
     }
 }

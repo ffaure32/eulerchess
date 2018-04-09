@@ -17,7 +17,7 @@ public class DeplacementTest {
         List<Case> deplacementsPossibles = echiquier.casesAccessibles();
 
         // ASSERT
-        assertThat(deplacementsPossibles).containsExactly(
+        assertThat(deplacementsPossibles).containsExactlyInAnyOrder(
             new Case("b3"),
             new Case("c2"));
     }
@@ -31,7 +31,7 @@ public class DeplacementTest {
         List<Case> deplacementsPossibles = echiquier.casesAccessibles();
 
         // ASSERT
-        assertThat(deplacementsPossibles).containsExactly(new Case("c2"));
+        assertThat(deplacementsPossibles).containsExactlyInAnyOrder(new Case("c2"));
     }
     @Test
     public void testCentre() {
@@ -42,7 +42,7 @@ public class DeplacementTest {
         List<Case> deplacementsPossibles = echiquier.casesAccessibles();
 
         // ASSERT
-        assertThat(deplacementsPossibles).containsExactly(
+        assertThat(deplacementsPossibles).containsExactlyInAnyOrder(
             new Case("f6"),
             new Case("g5"),
             new Case("g3"),

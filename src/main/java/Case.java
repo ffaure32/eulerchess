@@ -4,17 +4,17 @@ public class Case {
 
     public static final int A_NUMERIC_VALUE = (int)'a' -1;
     public static final int ONE_NUMERIC_VALUE = (int)'1' -1;
-    public final int ligne;
     public final int colonne;
+    public final int ligne;
 
     public Case(String pos) {
-        ligne = (int)pos.charAt(0) - A_NUMERIC_VALUE;
-        colonne = (int)pos.charAt(1) - ONE_NUMERIC_VALUE;
+        colonne = (int)pos.charAt(0) - A_NUMERIC_VALUE;
+        ligne = (int)pos.charAt(1) - ONE_NUMERIC_VALUE;
     }
 
-    public Case(int ligne, int colonne) {
-        this.ligne = ligne;
+    public Case(int colonne, int ligne) {
         this.colonne = colonne;
+        this.ligne = ligne;
     }
 
     public boolean valide() {
@@ -46,7 +46,7 @@ public class Case {
 
     @Override
     public String toString() {
-        char pos = (char)(A_NUMERIC_VALUE+ligne);
-        return new StringBuilder().append(pos).append(colonne).toString();
+        char pos = (char)(A_NUMERIC_VALUE+colonne);
+        return new StringBuilder().append(pos).append(ligne).toString();
     }
 }
