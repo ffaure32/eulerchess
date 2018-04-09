@@ -3,14 +3,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum DeplacementCavalier {
-    NE(1, 2),
-    ENE(2, 1),
-    ESE(2, -1),
-    SE(1, -2),
-    SO(-1, -2),
-    OSO(-2, -1),
-    ONO(-2, 1),
-    NO(-1, 2);
+    NORD_EST(1, 2),
+    EST_NORD_EST(2, 1),
+    EST_SUD_EST(2, -1),
+    SUD_SUD_EST(1, -2),
+    SUD_OUEST(-1, -2),
+    OUEST_SUD_OUEST(-2, -1),
+    OUEST_NORD_OUEST(-2, 1),
+    NORD_OUEST(-1, 2);
 
     private final int deplacementLignes;
     private final int deplacementColonnes;
