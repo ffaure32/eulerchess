@@ -3,26 +3,38 @@ import java.util.StringJoiner;
 
 public class ProblemeCavaliersPrinter {
     public void print(List<Case> cases) {
-        for (int i = Echiquier.NB_LIGNES; i >0; i--) {
-            System.out.print(String.format("%1d  ", i));
-            StringJoiner ligneJoiner = new StringJoiner("|", "[", "]");
-            for (int j = 1; j <=Echiquier.NB_COLONNES; j++) {
-                ligneJoiner.add(getPositionString(cases, i, j));
-            }
-            System.out.println(ligneJoiner.toString());
+        for (int numLigne = Echiquier.NB_LIGNES; numLigne >0; numLigne--) {
+            afficherNumeroLigne(numLigne);
+            afficherContenuLigne(cases, numLigne);
         }
-        StringJoiner lettresJoiner = new StringJoiner(" ", " ", " ");
-        lettresJoiner.add("  ");
+        afficherLettresSurDerniereLigne();
+    }
+
+    private void afficherNumeroLigne(int i) {
+        System.out.print(String.format("%1d  ", i));
+    }
+
+    private void afficherContenuLigne(List<Case> cases, int numLigne) {
+        StringJoiner ligneJoiner = new StringJoiner("|", "[", "]");
+        for (int numColonne = 1; numColonne <=Echiquier.NB_COLONNES; numColonne++) {
+            ligneJoiner.add(recupererClassementCase(cases, numLigne, numColonne));
+        }
+        System.out.println(ligneJoiner.toString());
+    }
+
+    private String recupererClassementCase(List<Case> cases, int numLigne, int numColonne) {
+        Case caseAttendue = new Case(numColonne, numLigne);
+        int pos = cases.indexOf(caseAttendue)+1;
+        return String.format("%1$2d", pos);
+    }
+
+    private void afficherLettresSurDerniereLigne() {
+        StringJoiner lettresJoiner = new StringJoiner(" ", "    ", " ");
         for(char col = 'a'; col <='h'; col++) {
             lettresJoiner.add(String.format("%1s ", col));
         }
         System.out.println(lettresJoiner.toString());
     }
 
-    private String getPositionString(List<Case> cases, int i, int j) {
-        Case caseAttendue = new Case(j, i);
-        int pos = cases.indexOf(caseAttendue)+1;
-        return String.format("%1$2d", pos);
-    }
 
 }
