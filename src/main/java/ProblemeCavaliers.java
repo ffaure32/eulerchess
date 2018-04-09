@@ -39,7 +39,7 @@ public class ProblemeCavaliers {
         return nouvellesPositionsPossibles
             .stream()
             .filter(Echiquier::echiquierComplet)
-            .collect(Collectors.reducing((a, b) -> null));
+            .findFirst();
     }
 
     private List<Echiquier> getNouvellesPositionsPossibles(List<Case> casesAccessibles,
