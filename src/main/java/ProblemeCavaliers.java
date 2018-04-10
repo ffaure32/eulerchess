@@ -1,7 +1,6 @@
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ProblemeCavaliers {
 
@@ -9,12 +8,10 @@ public class ProblemeCavaliers {
         return prochainDeplacement(new Echiquier(caseDepart));
     }
 
+    @SuppressWarnings("unchecked")
     private List<Case> prochainDeplacement(Echiquier etatEchiquierActuel) {
-        List<Case> casesAccessibles = etatEchiquierActuel.casesAccessibles();
-        List<Case> deplacementsAnterieurs = etatEchiquierActuel.getDeplacements();
+        List<Echiquier> nouvellesPositionsPossibles = etatEchiquierActuel.getNouveauxEchiquiersPossibles();
 
-        List<Echiquier> nouvellesPositionsPossibles = getNouvellesPositionsPossibles(casesAccessibles,
-            deplacementsAnterieurs);
         if(cheminCondamne(nouvellesPositionsPossibles)) {
             return Collections.EMPTY_LIST;
         }
@@ -42,21 +39,10 @@ public class ProblemeCavaliers {
             .findFirst();
     }
 
-    private List<Echiquier> getNouvellesPositionsPossibles(List<Case> casesAccessibles,
-        List<Case> deplacementsAnterieurs) {
-        return casesAccessibles
-            .stream()
-            .map(pos -> new Echiquier(deplacementsAnterieurs, pos))
-            .collect(Collectors.toList());
-    }
-
     private boolean cheminCondamne(List<Echiquier> nouvellesPositionsPossibles) {
         return nouvellesPositionsPossibles
             .stream()
-            .anyMatch(this::isCheminCondamne);
+            .anyMatch(Echiquier::isCheminCondamne);
     }
 
-    private boolean isCheminCondamne(Echiquier nouveauDeplacement) {
-        return nouveauDeplacement.casesAccessibles().isEmpty() && !nouveauDeplacement.echiquierComplet();
-    }
 }

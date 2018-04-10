@@ -8,7 +8,8 @@ public class Echiquier {
 
     public static final int NB_COLONNES = 8;
     public static final int NB_LIGNES = 8;
-    public static final int TAILLE_ECHIQUIER = NB_COLONNES * NB_LIGNES;
+
+    private static final int TAILLE_ECHIQUIER = NB_COLONNES * NB_LIGNES;
 
     private final List<Case> deplacements;
 
@@ -26,7 +27,7 @@ public class Echiquier {
     public List<Case> casesAccessibles() {
         Case caseActuelle = Iterables.getLast(deplacements);
         List<Case> positionsPossibles = DeplacementCavalier.deplacementsPossibles(caseActuelle);
-        return positionsPossibles.stream().filter(pos -> caseInoccupee(pos))
+        return positionsPossibles.stream().filter(this::caseInoccupee)
             .collect(Collectors.toList());
     }
 
@@ -38,7 +39,24 @@ public class Echiquier {
         return Collections.unmodifiableList(deplacements);
     }
 
-    boolean echiquierComplet() {
+    public boolean echiquierComplet() {
         return deplacements.size() == TAILLE_ECHIQUIER;
+    }
+
+    public boolean isCheminCondamne() {
+        return casesAccessibles().isEmpty() && !echiquierComplet();
+    }
+
+    public List<Echiquier> getNouveauxEchiquiersPossibles() {
+        return getNouvellesPositionsPossibles(casesAccessibles(),
+            getDeplacements());
+    }
+
+    private List<Echiquier> getNouvellesPositionsPossibles(List<Case> casesAccessibles,
+        List<Case> deplacementsAnterieurs) {
+        return casesAccessibles
+            .stream()
+            .map(pos -> new Echiquier(deplacementsAnterieurs, pos))
+            .collect(Collectors.toList());
     }
 }
