@@ -1,9 +1,9 @@
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 public class ProblemeCavaliers {
-
     public List<Case> solutionProblemeEuler(Case caseDepart) {
         return prochainDeplacement(new Echiquier(caseDepart));
     }
@@ -12,9 +12,6 @@ public class ProblemeCavaliers {
     private List<Case> prochainDeplacement(Echiquier etatEchiquierActuel) {
         List<Echiquier> nouvellesPositionsPossibles = etatEchiquierActuel.getNouveauxEchiquiersPossibles();
 
-        if(cheminCondamne(nouvellesPositionsPossibles)) {
-            return Collections.EMPTY_LIST;
-        }
         Optional<Echiquier> solution = solutionParmiNouvellesPositions(nouvellesPositionsPossibles);
         if(solution.isPresent()) {
             return solution.get().getDeplacements();
@@ -27,6 +24,7 @@ public class ProblemeCavaliers {
     private Optional<List<Case>> testerProchainsDeplacements(List<Echiquier> nouvellesPositionsPossibles) {
         return nouvellesPositionsPossibles
             .stream()
+            .sorted(Comparator.comparingInt(Echiquier::nombreCasesAccessibles))
             .map(this::prochainDeplacement)
             .filter(cs -> !cs.isEmpty())
             .findFirst();
@@ -37,12 +35,6 @@ public class ProblemeCavaliers {
             .stream()
             .filter(Echiquier::echiquierComplet)
             .findFirst();
-    }
-
-    private boolean cheminCondamne(List<Echiquier> nouvellesPositionsPossibles) {
-        return nouvellesPositionsPossibles
-            .stream()
-            .anyMatch(Echiquier::isCheminCondamne);
     }
 
 }

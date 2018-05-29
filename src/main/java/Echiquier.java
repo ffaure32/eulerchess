@@ -31,6 +31,10 @@ public class Echiquier {
             .collect(Collectors.toList());
     }
 
+    public int nombreCasesAccessibles() {
+        return casesAccessibles().size();
+    }
+
     private boolean caseInoccupee(Case pos) {
         return !deplacements.contains(pos);
     }
@@ -41,10 +45,6 @@ public class Echiquier {
 
     public boolean echiquierComplet() {
         return deplacements.size() == TAILLE_ECHIQUIER;
-    }
-
-    public boolean isCheminCondamne() {
-        return casesAccessibles().isEmpty() && !echiquierComplet();
     }
 
     public List<Echiquier> getNouveauxEchiquiersPossibles() {
